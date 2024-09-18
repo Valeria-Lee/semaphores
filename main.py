@@ -35,17 +35,20 @@ def make_cash_ops(register_number, *args):
             print(f"Caja #{register_number}: {str(new_cash_register.cash)}")
 
     print(f"Caja #{register_number}, Dinero en caja: {new_cash_register.cash}")
-    
+
     # Seccion critica.
     semaphore.acquire()
+    print(f"Semaforos disponibles: {semaphore._value}") # Debe ser 0 porque el unico se esta usando en este momento.
     new_cash_register.restore_total_money()
     time.sleep(5)
     semaphore.release()
-    
+
     print(f"Dinero en tienda despues de caja #{register_number}: {str(total_money)}")
 
 def main():    
     threads = []
+
+    print(f"Semaforos disponibles: {semaphore._value}") # Debe ser 1 porque todavia no se ha usado.
 
     for i in range(5):
         ops_number: int = random.randint(1,5)
